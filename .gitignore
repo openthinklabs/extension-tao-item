@@ -4,4 +4,8 @@ composer.lock
 .idea/
 generis/
 tao/
+<<<<<<< HEAD
 taoBackOffice/
+=======
+taoBackOffice/
+>>>>>>> master
