@@ -1,17 +1,24 @@
 msgid ""
 msgstr ""
-"Project-Id-Version: TAO 2021.10\n"
-"PO-Revision-Date: 2021-10-22T12:33:46\n"
+"Project-Id-Version: tao-open-source\n"
+"PO-Revision-Date: 2023-12-05 14:39\n"
 "Last-Translator: TAO Translation Team <translation@tao.lu>\n"
 "MIME-Version: 1.0\n"
-"Language: nb-NO\n"
+"Language: nb_NO\n"
 "sourceLanguage: en-US\n"
-"targetLanguage: nb-NO\n"
-"Content-Type: text/plain; charset=utf-8\n"
+"targetLanguage: en-US\n"
+"Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "X-Poedit-Basepath: ../../\n"
 "X-Poedit-KeywordsList: __\n"
 "X-Poedit-SearchPath-0: .\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"X-Crowdin-Project: tao-open-source\n"
+"X-Crowdin-Project-ID: 590867\n"
+"X-Crowdin-Language: nb\n"
+"X-Crowdin-File: /[oat-sa.extension-tao-item] develop/locales/en-US/messages.po\n"
+"X-Crowdin-File-ID: 805\n"
+"Language-Team: Norwegian Bokmal\n"
 
 msgid "<b>Note</b>: For empty classes, the RDF format<br />is the only available format."
 msgstr "<b>Merk</b>: For tomme klasser er RDF-formatet<br />det eneste tilgjengelige formatet."
@@ -32,7 +39,7 @@ msgid "Are you sure you want to delete the item"
 msgstr "Er du sikker på at du vil slette oppgaven"
 
 msgid "Are you sure you want to delete this class and all of its content?"
-msgstr "Er du sikker på at du vil slette denne mappen og innholdet i den?"
+msgstr "Er du sikker på at du vil slette denne mappen og alt innholdet i den?"
 
 msgid "Are you sure you want to delete this item?"
 msgstr "Er du sikker på at du vil slette denne oppgaven?"
@@ -89,7 +96,7 @@ msgstr "Rediger oppgave"
 
 #, tao-public
 msgid "Export"
-msgstr "Eksporter"
+msgstr ""
 
 msgid "Expose the property value to create automated categories."
 msgstr "Vis egenskapsverdien for å lage automatiserte kategorier."
@@ -98,7 +105,7 @@ msgid "Failed retrieving %s"
 msgstr "Kunne ikke hente %s"
 
 msgid "Forbidden action"
-msgstr "Ugyldig handling"
+msgstr "Forbudt handling"
 
 #, tao-public
 msgid "Import"
@@ -135,11 +142,11 @@ msgstr "Administrer egenskaper for oppgavemappe"
 
 #, tao-public
 msgid "Manage items"
-msgstr "Administrer oppgaver"
+msgstr "Administrere oppgaver"
 
 #, tao-public
 msgid "Manage Schema"
-msgstr "Administrer skjema"
+msgstr "Administrer egenskaper"
 
 msgid "Mobile preview"
 msgstr "Forhåndsvisning for mobil"
@@ -183,7 +190,7 @@ msgstr "Forhåndsvis"
 
 #, tao-public
 msgid "Properties"
-msgstr "Egenskaper"
+msgstr ""
 
 msgid "Published \"%1$s\" in language \"%2$s"
 msgstr "Publisert \"%1$s\" på språk \"%2$s"
@@ -192,13 +199,13 @@ msgid "Remove this message"
 msgstr "Fjern denne meldingen"
 
 msgid "Resource deleted"
-msgstr "Ressurs slettet"
+msgstr "Ressurs ble slettet"
 
 msgid "Retrieving external resources"
 msgstr "Henter eksterne ressurser"
 
 msgid "s"
-msgstr "s"
+msgstr ""
 
 msgid "Submit"
 msgstr "Lever"
@@ -231,7 +238,7 @@ msgid "Unable to create deployement directory"
 msgstr "Kan ikke opprette distribusjonskatalog"
 
 msgid "Unable to delete the selected resource"
-msgstr "Kan ikke slette den valgte ressursen"
+msgstr "Kan ikke slette den valgte filen"
 
 msgid "Unable to render the item from %s : %s %s"
 msgstr "Kan ikke gjengi oppgaven fra %s: %s %s"
@@ -243,7 +250,7 @@ msgid "Warning"
 msgstr "Advarsel"
 
 msgid "you are trying to delete is too large and contains too many subclasses."
-msgstr "som du prøver å slette er for stor og inneholder for mange undermapper."
+msgstr "du prøver å slette er for stor og inneholder for mange undermapper."
 
 msgid "You checked out this item %2s ago"
 msgstr "Du sjekket ut denne oppgaven for %2s siden"

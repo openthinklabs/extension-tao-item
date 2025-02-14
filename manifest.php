@@ -15,14 +15,20 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  *
- * Copyright (c) 2002-2008 (original work) Public Research Centre Henri Tudor & University of Luxembourg (under the project TAO & TAO2);
- *               2008-2010 (update and modification) Deutsche Institut für Internationale Pädagogische Forschung (under the project TAO-TRANSFER);
- *               2009-2012 (update and modification) Public Research Centre Henri Tudor (under the project TAO-SUSTAIN & TAO-DEV);
+ * Copyright (c) 2002-2008 (original work) Public Research Centre Henri Tudor & University of Luxembourg
+ *                         (under the project TAO & TAO2);
+ *               2008-2010 (update and modification) Deutsche Institut für Internationale Pädagogische Forschung
+ *                         (under the project TAO-TRANSFER);
+ *               2009-2012 (update and modification) Public Research Centre Henri Tudor
+ *                         (under the project TAO-SUSTAIN & TAO-DEV);
  *
  */
 
 use oat\tao\model\user\TaoRoles;
 use oat\taoBackOffice\controller\Lists;
+use oat\taoItems\model\Form\ServiceProvider\FormServiceProvider;
+use oat\taoItems\model\search\ItemClassListServiceProvider;
+use oat\taoItems\model\Translation\ServiceProvider\TranslationServiceProvider;
 use oat\taoItems\model\user\TaoItemsRoles;
 use oat\tao\model\accessControl\func\AccessRule;
 use oat\taoItems\scripts\install\RegisterNpmPaths;
@@ -32,6 +38,8 @@ use oat\taoItems\scripts\install\SetRolesPermissions;
 use oat\taoItems\scripts\install\RegisterCategoryService;
 use oat\taoItems\scripts\install\RegisterAssetTreeBuilder;
 use oat\taoItems\scripts\install\RegisterItemPreviewerRegistryService;
+use oat\taoItems\scripts\install\SetupEventListeners;
+use oat\taoItems\scripts\install\SetupSectionVisibilityFilters;
 
 /*
  * @author CRP Henri Tudor - TAO Team - {@link http://www.tao.lu}
@@ -62,6 +70,8 @@ return [
             RegisterItemPreviewerRegistryService::class,
             RegisterAssetTreeBuilder::class,
             SetRolesPermissions::class,
+            SetupEventListeners::class,
+            SetupSectionVisibilityFilters::class
         ],
     ],
     'update' => taoItems_scripts_update_Updater::class,
@@ -199,6 +209,11 @@ return [
         ],
         [
             AccessRule::GRANT,
+            TaoItemsRoles::ITEM_IMPORTER,
+            ['ext' => 'taoItems', 'mod' => 'RestItem', 'act' => 'getItemClasses'],
+        ],
+        [
+            AccessRule::GRANT,
             TaoItemsRoles::ITEM_DELETER,
             ['ext' => 'taoItems', 'mod' => 'Items', 'act' => 'deleteItem'],
         ],
@@ -207,6 +222,24 @@ return [
             TaoItemsRoles::ITEM_DELETER,
             ['ext' => 'taoItems', 'mod' => 'Items', 'act' => 'moveInstance'],
         ],
+        [
+            AccessRule::GRANT,
+            TaoItemsRoles::RESTRICTED_ITEM_AUTHOR,
+            ['ext' => 'taoItems', 'mod' => 'Items']
+        ],
+        [
+            AccessRule::GRANT,
+            TaoItemsRoles::RESTRICTED_ITEM_AUTHOR,
+            ['ext' => 'taoItems', 'mod' => 'ItemExport']
+        ],
+        [
+            AccessRule::GRANT,
+            TaoItemsRoles::ITEM_TRANSLATOR,
+            [
+                'ext' => 'tao',
+                'mod' => 'Translation'
+            ]
+        ]
     ],
     'optimizableClasses' => [
         'http://www.tao.lu/Ontologies/TAOItem.rdf#Item',
@@ -234,5 +267,8 @@ return [
     ],
     'containerServiceProviders' => [
         CopierServiceProvider::class,
+        ItemClassListServiceProvider::class,
+        TranslationServiceProvider::class,
+        FormServiceProvider::class,
     ],
 ];

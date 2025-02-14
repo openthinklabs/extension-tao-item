@@ -15,11 +15,13 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  *
- * Copyright (c) 2002-2008 (original work) Public Research Centre Henri Tudor & University of Luxembourg (under the project TAO & TAO2);
- *               2008-2010 (update and modification) Deutsche Institut für Internationale Pädagogische Forschung (under the project TAO-TRANSFER);
- *               2009-2012 (update and modification) Public Research Centre Henri Tudor (under the project TAO-SUSTAIN & TAO-DEV);
+ * Copyright (c) 2002-2008 (original work) Public Research Centre Henri Tudor & University of Luxembourg
+ *                         (under the project TAO & TAO2);
+ *               2008-2010 (update and modification) Deutsche Institut für Internationale Pädagogische Forschung
+ *                         (under the project TAO-TRANSFER);
+ *               2009-2012 (update and modification) Public Research Centre Henri Tudor
+ *                         (under the project TAO-SUSTAIN & TAO-DEV);
  *               2012-2018 (update and modification) Open Assessment Technologies SA (under the project TAO-PRODUCT);
- *
  */
 
 declare(strict_types=1);
@@ -27,6 +29,8 @@ declare(strict_types=1);
 use oat\oatbox\event\EventManager;
 use oat\generis\model\OntologyRdfs;
 use oat\tao\model\lock\LockManager;
+use oat\tao\model\TaoOntology;
+use oat\taoItems\model\Form\Modifier\FormModifierProxy;
 use oat\taoItems\model\ItemModelStatus;
 use oat\tao\model\accessControl\Context;
 use oat\generis\model\OntologyAwareTrait;
@@ -35,6 +39,7 @@ use oat\oatbox\validator\ValidatorInterface;
 use oat\taoItems\model\event\ItemUpdatedEvent;
 use oat\tao\model\controller\SignedFormInstance;
 use oat\taoItems\model\event\ItemRdfUpdatedEvent;
+use oat\taoItems\model\Translation\Form\Modifier\TranslationFormModifierProxy;
 use tao_helpers_form_FormContainer as FormContainer;
 use oat\tao\model\Lists\Business\Validation\DependsOnPropertyValidator;
 
@@ -45,6 +50,7 @@ use oat\tao\model\Lists\Business\Validation\DependsOnPropertyValidator;
  * @package taoItems
  * @license GPLv2  http://www.opensource.org/licenses/gpl-2.0.php
  */
+// phpcs:ignore
 class taoItems_actions_Items extends tao_actions_SaSModule
 {
     use OntologyAwareTrait;
@@ -69,7 +75,17 @@ class taoItems_actions_Items extends tao_actions_SaSModule
             if (!empty($uri)) {
                 $item = $this->getResource(tao_helpers_Uri::decode($uri));
                 $this->setData('label', $item->getLabel());
-                $this->setData('authoringUrl', _url('authoring', 'Items', 'taoItems', ['uri' => $uri, 'classUri' => $classUri]));
+
+                $this->setData(
+                    'authoringUrl',
+                    _url(
+                        'authoring',
+                        'Items',
+                        'taoItems',
+                        ['uri' => $uri, 'classUri' => $classUri]
+                    )
+                );
+
                 $this->setData('previewUrl', $this->getClassService()->getPreviewUrl($item));
             }
         }
@@ -171,9 +187,17 @@ class taoItems_actions_Items extends tao_actions_SaSModule
                             $this->getDependsOnPropertyValidator(),
                         ],
                     ],
+                    FormContainer::FORM_MODIFIERS => [
+                        FormModifierProxy::class,
+                        TranslationFormModifierProxy::class,
+                    ],
                 ]
             );
             $myForm = $formContainer->getForm();
+
+            $myForm->setOptions([
+                'resourceType' => TaoOntology::ITEM_CLASS_URI
+            ]);
 
             if ($hasWriteAccess) {
                 if ($myForm->isSubmited() && $myForm->isValid()) {
@@ -332,13 +356,29 @@ class taoItems_actions_Items extends tao_actions_SaSModule
                     $itemModelImpl = $this->getClassService()->getItemModelImplementation($itemModel);
                     $authoringUrl = $itemModelImpl->getAuthoringUrl($item);
                     if (!empty($authoringUrl)) {
-                        LockManager::getImplementation()->setLock($item, $this->getSession()->getUser()->getIdentifier());
+                        LockManager::getImplementation()
+                            ->setLock($item, $this->getSession()->getUser()->getIdentifier());
+
+                        // Add support for the translation and the side-by-side authoring tool
+                        if ($this->getRequestParameter('translation') !== null) {
+                            $authoringUrl = sprintf(
+                                '%s&translation=%s',
+                                $authoringUrl,
+                                $this->getRequestParameter('translation')
+                            );
+                        }
+                        if ($this->getRequestParameter('originResourceUri') !== null) {
+                            $authoringUrl = sprintf(
+                                '%s&originResourceUri=%s',
+                                $authoringUrl,
+                                $this->getRequestParameter('originResourceUri')
+                            );
+                        }
 
                         return $this->forwardUrl($authoringUrl);
                     }
                 }
                 throw new common_exception_NoImplementation();
-                $this->setData('instanceUri', tao_helpers_Uri::encode($item->getUri(), false));
             } catch (Exception $e) {
                 if ($e instanceof InterruptedActionException) {
                     throw $e;
@@ -346,9 +386,14 @@ class taoItems_actions_Items extends tao_actions_SaSModule
                 $this->setData('error', true);
                 //build clear error or warning message:
                 if (!empty($itemModel) && $itemModel instanceof core_kernel_classes_Resource) {
-                    $errorMsg = __('No item authoring tool available for the selected type of item: %s' . $itemModel->getLabel());
+                    $errorMsg = __(
+                        'No item authoring tool available for the selected type of item: %s'
+                            . $itemModel->getLabel()
+                    );
                 } else {
-                    $errorMsg = __('No item type selected for the current item.') . " {$item->getLabel()} " . __('Please select first the item type!');
+                    $errorMsg = __('No item type selected for the current item.')
+                        . " {$item->getLabel()} "
+                        . __('Please select first the item type!');
                 }
                 $this->setData('errorMsg', $errorMsg);
             }

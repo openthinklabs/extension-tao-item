@@ -25,6 +25,7 @@ namespace oat\taoItems\model\user;
 interface TaoItemsRoles
 {
     public const ITEM_AUTHOR = 'http://www.tao.lu/Ontologies/TAOItem.rdf#ItemAuthor';
+    public const ITEM_TRANSLATOR = 'http://www.tao.lu/Ontologies/TAOItem.rdf#ItemTranslator';
     public const ITEM_AUTHOR_ABSTRACT = 'http://www.tao.lu/Ontologies/TAOItem.rdf#AbstractItemAuthor';
     public const ITEM_MANAGER = 'http://www.tao.lu/Ontologies/TAOItem.rdf#ItemsManagerRole';
 
@@ -41,4 +42,5 @@ interface TaoItemsRoles
     public const ITEM_RESOURCE_CREATOR = 'http://www.tao.lu/Ontologies/TAOItem.rdf#ItemResourceCreatorRole';
     public const ITEM_IMPORTER = 'http://www.tao.lu/Ontologies/TAOItem.rdf#ItemImporterRole';
     public const ITEM_DELETER = 'http://www.tao.lu/Ontologies/TAOItem.rdf#ItemDeleterRole';
+    public const RESTRICTED_ITEM_AUTHOR = 'http://www.tao.lu/Ontologies/TAO.rdf#RestrictedItemAuthor';
 }

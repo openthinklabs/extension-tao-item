@@ -1,4 +1,5 @@
 <?php
+
 /**
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -21,11 +22,10 @@ declare(strict_types=1);
 
 namespace oat\taoItems\test\unit\models\classes\media;
 
-use oat\tao\model\accessControl\AccessControlEnablerInterface;
 use oat\tao\model\media\MediaAsset;
+use oat\tao\model\media\MediaBrowser;
 use oat\tao\model\media\mediaSource\DirectorySearchQuery;
 use oat\taoItems\model\media\AssetTreeBuilder;
-use oat\taoMediaManager\model\MediaSource;
 use tao_helpers_Uri;
 use oat\generis\test\TestCase;
 
@@ -53,7 +53,7 @@ class AssetTreeBuilderTest extends TestCase
         ];
         $search = $this->createMock(DirectorySearchQuery::class);
         $mediaAsset = $this->createMock(MediaAsset::class);
-        $mediaSource = $this->createMock(MediaSource::class);
+        $mediaSource = $this->createMock(MediaBrowser::class);
 
         $search->method('getAsset')
             ->willReturn($mediaAsset);
@@ -63,9 +63,6 @@ class AssetTreeBuilderTest extends TestCase
 
         $mediaSource->method('getDirectories')
             ->willReturn($data);
-
-        $mediaSource->expects($this->once())
-            ->method('enableAccessControl');
 
         $expectedData = [
             'children' => [
@@ -84,4 +81,3 @@ class AssetTreeBuilderTest extends TestCase
         );
     }
 }
-
